@@ -30,4 +30,6 @@ $xsl->load("Météo.xsl");
 $proc = new XSLTProcessor;
 $proc->importStyleSheet($xsl);
 
-echo $proc->transformToXML($xml);
+$page = $proc->transformToXML($xml);
+
+echo str_replace(array("%%lat%%","%%lon%%"), array($latitude,$longitude), $page); 
