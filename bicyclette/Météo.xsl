@@ -22,7 +22,7 @@
         </ul>
         <h2>Météo</h2>
         <ul>
-          <xsl:apply-templates select="city" mode="meteo"/>
+          <!-- <xsl:apply-templates select="city" mode="meteo"/> -->
           <xsl:apply-templates select="temperature"/>
           <xsl:apply-templates select="humidity"/>
           <xsl:apply-templates select="wind"/>
@@ -30,8 +30,13 @@
           <xsl:apply-templates select="weather"/>
         </ul>
         <h2>Map</h2>
-        <div style="height: 300px; width: 400px" id="map">
-          <script type="text/javascript">var map = L.map('map').setView([<xsl:apply-templates select="city" mode="positionlat"/>,<xsl:apply-templates select="city" mode="positionlon"/>], 13);
+        <div style="height: 600px; width: 800px" id="map">
+          <script type="text/javascript">
+            var map = L.map('map').setView([%%lat%%,%%lon%%], 13);
+        </script>
+        <script src="script.js"></script>
+        <script type="text/javascript">
+          var marker = L.marker([%%lat%%,%%lon%%]).addTo(map);
         </script>
         </div>
       </body>
