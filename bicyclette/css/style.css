@@ -1,0 +1,44 @@
+
+body
+{
+	background-color: #dfdfdf;
+}
+
+#flex-container
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	height: 90%;
+	padding: 0;
+	margin: 2%;
+}
+
+#ville
+{
+	font-size: 3em;
+}
+
+#map
+{
+	padding: 0;
+	margin: 0;
+	border: black solid;
+	border-radius: 5px;
+}
+
+#donnees
+{
+	flex-grow: 1
+}
+
+#data
+{
+		margin: 0 auto;
+		width: 50%;
+}
+
+#data td
+{
+	text-align: center;
+}

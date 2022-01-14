@@ -1,6 +1,11 @@
 <?php
 
-$options = array('http' => array('proxy' =>  'tcp://www-cache:3128','request_fulluri'=> True,));
+$options = array(
+	'http' => array('method' => 'POST','proxy' =>  'tcp://www-cache:3128','request_fulluri'=> True,),
+    'ssl' => array(
+        'verify_peer'      => false,
+        'verify_peer_name' => false,
+    ));
 
 $context = stream_context_set_default($options);
 
@@ -32,4 +37,24 @@ $proc->importStyleSheet($xsl);
 
 $page = $proc->transformToXML($xml);
 
-echo str_replace(array("%%lat%%","%%lon%%"), array($latitude,$longitude), $page); 
+//Récupération position station
+
+$StationData =simplexml_load_string(file_get_contents("http://www.velostanlib.fr/service/carto"));
+
+$stationList = "";
+
+foreach ($StationData->markers->marker as $data)
+{
+	$stationList .= "L.marker([".$data["lat"].",".$data["lng"]."], {icon: StationMarker}).addTo(map);";
+
+	$DispoData = simplexml_load_string(file_get_contents("http://www.velostanlib.fr/service/stationdetails/nancy/".$data["number"]));
+
+	$stationList .= "L.marker([".$data["lat"].",".$data["lng"]."], {icon:
+		L.ExtraMarkers.icon({icon: 'fa-number',number: ".$DispoData->available.",markerColor: 'blue'})
+	}).addTo(map);";
+
+}
+
+//Creation de la page
+
+echo str_replace(array("%%lat%%","%%lon%%","%%station%%"), array($latitude,$longitude,$stationList), $page); 

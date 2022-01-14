@@ -7,38 +7,45 @@
     <html>
       <head>
         <title>A bicyclette</title>
+        <link rel="stylesheet" href="css/leaflet.extra-markers.min.css"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <link rel="stylesheet"
           href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" 
           integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
           crossorigin=""/>
+          <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css"/>
+            <link rel="stylesheet" href="css/leaflet.awesome-markers.css"/>
           <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
           integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
           crossorigin=""></script>
+          <script src="js/leaflet.awesome-markers.js"></script>
+          <script src="js/leaflet.extra-markers.min.js"></script>
       </head>
       <body>
-        <h2>Position</h2>
-        <ul>
-          <xsl:apply-templates select="city" mode="position"/>
-        </ul>
-        <h2>Météo</h2>
-        <ul>
-          <!-- <xsl:apply-templates select="city" mode="meteo"/> -->
+      <div id="flex-container">
+        <div style="height: 100%; width: 60%" id="map">
+          <script type="text/javascript">
+            var map = L.map('map').setView([%%lat%%,%%lon%%], 13);
+        </script>
+        <script src="js/script.js"></script>
+        <script type="text/javascript">
+          L.marker([%%lat%%,%%lon%%], {icon: UserMarker}).addTo(map);
+          %%station%%
+        </script>
+        </div>
+        <div id="donnees">
+        <table id="data">
+          <tr>
+            <td id="ville" colspan="2"><xsl:apply-templates select="city" mode="position"/></td>
+          </tr>
           <xsl:apply-templates select="temperature"/>
           <xsl:apply-templates select="humidity"/>
           <xsl:apply-templates select="wind"/>
           <xsl:apply-templates select="clouds"/>
           <xsl:apply-templates select="weather"/>
-        </ul>
-        <h2>Map</h2>
-        <div style="height: 600px; width: 800px" id="map">
-          <script type="text/javascript">
-            var map = L.map('map').setView([%%lat%%,%%lon%%], 13);
-        </script>
-        <script src="script.js"></script>
-        <script type="text/javascript">
-          var marker = L.marker([%%lat%%,%%lon%%]).addTo(map);
-        </script>
-        </div>
+        </table>
+      </div>
+      </div>
       </body>
     </html>  
 
@@ -112,35 +119,35 @@
 <!-- Template de données -->
 
    <xsl:template match="city/@name">
-     <li>Ville : <xsl:value-of select="."/></li>
+     <xsl:value-of select="."/>
    </xsl:template>
 
    <xsl:template match="sun/@rise">
-     <li>Le soleil se lève à : <xsl:value-of select="."/></li>
+     <tr><td>Le soleil se lève à : </td><td><xsl:value-of select="."/></td></tr>
    </xsl:template> 
 
    <xsl:template match="sun/@set">
-     <li>Le soleil se couche à : <xsl:value-of select="."/></li>
+     <tr><td>Le soleil se couche à : </td><td><xsl:value-of select="."/></td></tr>
    </xsl:template>
 
    <xsl:template match="temperature/@value">
-     <li>Temperature : <xsl:value-of select="."/> °C</li>
+     <tr><td>Temperature : </td><td><xsl:value-of select="."/> °C</td></tr>
    </xsl:template> 
 
    <xsl:template match="humidity/@value">
-     <li>Humidité : <xsl:value-of select="."/> %</li>
+     <tr><td>Humidité : </td><td><xsl:value-of select="."/> %</td></tr>
    </xsl:template> 
 
    <xsl:template match="speed/@value">
-     <li>Vent : <xsl:value-of select="."/> m/s</li>
+     <tr><td>Vent : </td><td><xsl:value-of select="."/> m/s</td></tr>
    </xsl:template> 
 
    <xsl:template match="clouds/@name">
-     <li>Ciel : <xsl:value-of select="."/></li>
+     <tr><td>Ciel : </td><td><xsl:value-of select="."/></td></tr>
    </xsl:template> 
 
    <xsl:template match="weather/@value">
-     <li>Précipitation : <xsl:value-of select="."/></li>
+     <tr><td>Précipitation : </td><td><xsl:value-of select="."/></td></tr>
    </xsl:template> 
 
   <xsl:template match="text()"/>
